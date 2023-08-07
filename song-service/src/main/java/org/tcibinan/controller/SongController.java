@@ -22,7 +22,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
-@Controller("/song")
+@Controller("/songs")
 public class SongController {
     
     private final SongService service;
