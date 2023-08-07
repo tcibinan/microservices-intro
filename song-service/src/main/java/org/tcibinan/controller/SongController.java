@@ -14,7 +14,7 @@ import org.tcibinan.controller.response.DeleteSongResponse;
 import org.tcibinan.controller.response.GetSongResponse;
 import org.tcibinan.entity.Song;
 import org.tcibinan.exception.NotFoundException;
-import org.tcibinan.exception.ValidationError;
+import org.tcibinan.exception.ValidationException;
 import org.tcibinan.service.SongService;
 
 import java.util.Arrays;
@@ -33,7 +33,7 @@ public class SongController {
 
     @Post
     public CreateSongResponse create(@Body CreateSongRequest request) {
-        Optional.ofNullable(request).orElseThrow(ValidationError::new);
+        Optional.ofNullable(request).orElseThrow(ValidationException::new);
         Song song = service.create(request);
         return new CreateSongResponse(song.getId());
     }
@@ -71,7 +71,7 @@ public class SongController {
     }
 
     @Error
-    public HttpResponse<JsonError> jsonError(HttpRequest<?> request, ValidationError e) {
+    public HttpResponse<JsonError> jsonError(HttpRequest<?> request, ValidationException e) {
         return HttpResponse.<JsonError>status(HttpStatus.BAD_REQUEST, "Bad request")
             .body(new JsonError("Bad request")
                 .link(Link.SELF, Link.of(request.getUri())));
