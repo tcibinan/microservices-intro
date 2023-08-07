@@ -3,6 +3,7 @@ package org.tcibinan.entity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.Lob;
 
 @Entity
 public class Resource {
@@ -10,7 +11,8 @@ public class Resource {
     @Id
     @GeneratedValue
     private Long id;
-    private String data;
+    @Lob
+    private byte[] data;
 
     public Resource() {
     }
@@ -23,11 +25,11 @@ public class Resource {
         this.id = id;
     }
 
-    public String getData() {
+    public byte[] getData() {
         return data;
     }
 
-    public void setData(String data) {
+    public void setData(byte[] data) {
         this.data = data;
     }
 }

@@ -3,19 +3,17 @@ package org.tcibinan.controller;
 import io.micronaut.http.HttpRequest;
 import io.micronaut.http.HttpResponse;
 import io.micronaut.http.HttpStatus;
-import io.micronaut.http.MediaType;
-import io.micronaut.http.annotation.*;
 import io.micronaut.http.annotation.Error;
+import io.micronaut.http.annotation.*;
 import io.micronaut.http.hateoas.JsonError;
 import io.micronaut.http.hateoas.Link;
 import org.tcibinan.controller.request.CreateResourceRequest;
 import org.tcibinan.controller.request.DeleteResourceRequest;
 import org.tcibinan.controller.response.CreateResourceResponse;
 import org.tcibinan.controller.response.DeleteResourceResponse;
-import org.tcibinan.controller.response.GetResourceResponse;
 import org.tcibinan.entity.Resource;
 import org.tcibinan.exception.NotFoundException;
-import org.tcibinan.exception.ValidationError;
+import org.tcibinan.exception.ValidationException;
 import org.tcibinan.service.ResourceService;
 
 import java.util.Arrays;
@@ -33,16 +31,18 @@ public class ResourceController {
     }
 
     @Post
-    public CreateResourceResponse create(@Body String body) {
-        CreateResourceRequest request = new CreateResourceRequest(body);
+    @Consumes("audio/mpeg")
+    public CreateResourceResponse create(@Body byte[] data) {
+        CreateResourceRequest request = new CreateResourceRequest(data);
         Resource resource = service.create(request);
         return new CreateResourceResponse(resource.getId());
     }
 
     @Get("/{id}")
-    public GetResourceResponse get(@PathVariable Long id) {
+    @Produces("audio/mpeg")
+    public byte[] get(@PathVariable Long id) {
         Resource resource = service.get(id).orElseThrow(NotFoundException::new);
-        return new GetResourceResponse(resource.getData());
+        return resource.getData();
     }
 
     @Delete
@@ -60,14 +60,14 @@ public class ResourceController {
     }
 
     @Error
-    public HttpResponse<JsonError> jsonError(HttpRequest<?> request, NotFoundException e) {
+    public HttpResponse<JsonError> error(HttpRequest<?> request, NotFoundException e) {
         return HttpResponse.<JsonError>status(HttpStatus.NOT_FOUND, "Not found")
             .body(new JsonError("Not found")
                 .link(Link.SELF, Link.of(request.getUri())));
     }
 
     @Error
-    public HttpResponse<JsonError> jsonError(HttpRequest<?> request, ValidationError e) {
+    public HttpResponse<JsonError> error(HttpRequest<?> request, ValidationException e) {
         return HttpResponse.<JsonError>status(HttpStatus.BAD_REQUEST, "Bad request")
             .body(new JsonError("Bad request")
                 .link(Link.SELF, Link.of(request.getUri())));
