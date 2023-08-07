@@ -1,0 +1,13 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath "com.avast.gradle:gradle-docker-compose-plugin:0.16.11"
+    }
+}
+
+apply plugin: 'docker-compose'
+
+composeBuild.dependsOn("resource-service:assemble")
+composeBuild.dependsOn("song-service:assemble")

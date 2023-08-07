@@ -1,0 +1,32 @@
+version: '3'
+services:
+    resource-service:
+        build:
+            context: resource-service
+        ports:
+            - 8080:8080
+        depends_on:
+            - resource-service-postgres
+    resource-service-postgres:
+        image: postgres:15.3
+        ports:
+            - 5432:5432
+        environment:
+            POSTGRES_DB: service
+            POSTGRES_USER: service
+            POSTGRES_PASSWORD: service
+    song-service:
+        build:
+            context: song-service
+        ports:
+            - 8081:8080
+        depends_on:
+            - song-service-postgres
+    song-service-postgres:
+        image: postgres:15.3
+        ports:
+            - 5433:5432
+        environment:
+            POSTGRES_DB: service
+            POSTGRES_USER: service
+            POSTGRES_PASSWORD: service
