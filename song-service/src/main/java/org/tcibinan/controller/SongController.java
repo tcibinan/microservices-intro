@@ -64,14 +64,14 @@ public class SongController {
     }
 
     @Error
-    public HttpResponse<JsonError> jsonError(HttpRequest<?> request, NotFoundException e) {
+    public HttpResponse<JsonError> error(HttpRequest<?> request, NotFoundException e) {
         return HttpResponse.<JsonError>status(HttpStatus.NOT_FOUND, "Not found")
             .body(new JsonError("Not found")
                 .link(Link.SELF, Link.of(request.getUri())));
     }
 
     @Error
-    public HttpResponse<JsonError> jsonError(HttpRequest<?> request, ValidationException e) {
+    public HttpResponse<JsonError> error(HttpRequest<?> request, ValidationException e) {
         return HttpResponse.<JsonError>status(HttpStatus.BAD_REQUEST, "Bad request")
             .body(new JsonError("Bad request")
                 .link(Link.SELF, Link.of(request.getUri())));
