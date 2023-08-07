@@ -12,16 +12,23 @@ repositories {
 }
 
 dependencies {
+    annotationProcessor("io.micronaut.data:micronaut-data-processor")
     annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+    annotationProcessor("io.micronaut.openapi:micronaut-openapi")
+    implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
     implementation("io.micronaut.serde:micronaut-serde-jackson")
+    implementation("io.micronaut.sql:micronaut-jdbc-hikari")
+    implementation("io.swagger.core.v3:swagger-annotations")
     runtimeOnly("ch.qos.logback:logback-classic")
+    testRuntimeOnly("com.h2database:h2")
+    runtimeOnly("org.postgresql:postgresql:42.6.0")
     testImplementation("io.micronaut:micronaut-http-client")
 }
-
 
 application {
     mainClass.set("org.tcibinan.Application")
 }
+
 java {
     sourceCompatibility = JavaVersion.toVersion("17")
     targetCompatibility = JavaVersion.toVersion("17")
@@ -47,6 +54,3 @@ micronaut {
         optimizeNetty = true
     }
 }
-
-
-
