@@ -5,28 +5,34 @@ plugins {
 }
 
 version = "0.1"
-group = "org.tcibinan"
+group = "org.tcibinan.song"
 
 repositories {
     mavenCentral()
 }
 
 dependencies {
-    annotationProcessor("io.micronaut.data:micronaut-data-processor")
-    annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+    implementation(project(":song-service-web"))
+
     annotationProcessor("io.micronaut.openapi:micronaut-openapi")
-    implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
+    annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+    annotationProcessor("io.micronaut.data:micronaut-data-processor")
+
+    implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut.serde:micronaut-serde-jackson")
+    implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
+
     implementation("io.swagger.core.v3:swagger-annotations")
+
     runtimeOnly("ch.qos.logback:logback-classic")
-    testRuntimeOnly("com.h2database:h2")
     runtimeOnly("org.postgresql:postgresql:42.6.0")
-    testImplementation("io.micronaut:micronaut-http-client")
+
+    testRuntimeOnly("com.h2database:h2")
 }
 
 application {
-    mainClass.set("org.tcibinan.Application")
+    mainClass.set("org.tcibinan.song.Application")
 }
 
 java {
@@ -40,7 +46,7 @@ micronaut {
     testRuntime("junit5")
     processing {
         incremental(true)
-        annotations("org.tcibinan.*")
+        annotations("org.tcibinan.song.*")
     }
     aot {
     // Please review carefully the optimizations enabled below
