@@ -17,12 +17,19 @@ dependencies {
     annotationProcessor("io.micronaut.openapi:micronaut-openapi")
     implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
     implementation("io.micronaut.serde:micronaut-serde-jackson")
+    implementation("io.micronaut:micronaut-http-client")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
     implementation("io.swagger.core.v3:swagger-annotations")
     runtimeOnly("ch.qos.logback:logback-classic")
     testRuntimeOnly("com.h2database:h2")
     runtimeOnly("org.postgresql:postgresql:42.6.0")
     testImplementation("io.micronaut:micronaut-http-client")
+
+    implementation(platform("org.apache.tika:tika-bom:2.8.0"))
+    implementation("org.apache.tika:tika-core")
+    implementation("org.apache.tika:tika-parsers-standard-package")
+
+    implementation(project(":song-service"))
 }
 
 application {
