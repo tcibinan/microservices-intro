@@ -6,7 +6,7 @@ import io.micronaut.serde.annotation.Serdeable;
 public record GetSongResponse(String name,
                               String artist,
                               String album,
-                              Long length,
-                              Long resourceId,
-                              Long year) {
+                              String length,
+                              String year,
+                              Long resourceId) {
 }

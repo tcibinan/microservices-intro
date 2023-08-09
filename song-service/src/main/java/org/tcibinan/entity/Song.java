@@ -13,9 +13,9 @@ public class Song {
     private String name;
     private String artist;
     private String album;
-    private Long length;
+    private String length;
+    private String year;
     private Long resourceId;
-    private Long year;
 
     public Song() {
     }
@@ -52,12 +52,20 @@ public class Song {
         this.album = album;
     }
 
-    public Long getLength() {
+    public String getLength() {
         return length;
     }
 
-    public void setLength(Long length) {
+    public void setLength(String length) {
         this.length = length;
+    }
+
+    public String getYear() {
+        return year;
+    }
+
+    public void setYear(String year) {
+        this.year = year;
     }
 
     public Long getResourceId() {
@@ -66,13 +74,5 @@ public class Song {
 
     public void setResourceId(Long resourceId) {
         this.resourceId = resourceId;
-    }
-
-    public Long getYear() {
-        return year;
-    }
-
-    public void setYear(Long year) {
-        this.year = year;
     }
 }

@@ -1,6 +1,7 @@
 package org.tcibinan.service;
 
 import jakarta.inject.Singleton;
+import jakarta.transaction.Transactional;
 import org.tcibinan.controller.request.CreateSongRequest;
 import org.tcibinan.controller.request.DeleteSongRequest;
 import org.tcibinan.entity.Song;
@@ -11,21 +12,22 @@ import java.util.Optional;
 
 @Singleton
 public class SongService {
-    
+
     private final SongRepository repository;
 
     public SongService(SongRepository repository) {
         this.repository = repository;
     }
-    
+
+    @Transactional
     public Song create(CreateSongRequest request) {
         Song song = new Song();
         song.setName(request.name());
         song.setArtist(request.artist());
         song.setAlbum(request.album());
         song.setLength(request.length());
-        song.setResourceId(request.resourceId());
         song.setYear(request.year());
+        song.setResourceId(request.resourceId());
         return repository.save(song);
     }
 
@@ -33,13 +35,14 @@ public class SongService {
         return repository.findById(id);
     }
 
+    @Transactional
     public List<Long> delete(DeleteSongRequest request) {
         return request.ids().stream()
-        .filter(id -> {
-            Optional<Song> song = repository.findById(id);
-            song.ifPresent(repository::delete);
-            return song.isPresent();
-        })
-        .toList();
+                .filter(id -> {
+                    Optional<Song> song = repository.findById(id);
+                    song.ifPresent(repository::delete);
+                    return song.isPresent();
+                })
+                .toList();
     }
 }

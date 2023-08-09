@@ -45,8 +45,8 @@ public class SongController {
                                    song.getArtist(),
                                    song.getAlbum(),
                                    song.getLength(),
-                                   song.getResourceId(),
-                                   song.getYear());
+                                   song.getYear(),
+                                   song.getResourceId());
     }
 
     @Delete
