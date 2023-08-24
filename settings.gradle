@@ -6,4 +6,6 @@ include 'resource-service-web'
 include 'song-service'
 include 'song-service-web'
 
+include 'micronaut-discovery-client-workaround'
+
 include 'eureka-server'

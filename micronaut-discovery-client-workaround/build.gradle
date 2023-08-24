@@ -1,0 +1,25 @@
+plugins {
+    id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("io.micronaut.library") version "4.0.2"
+    id("io.micronaut.aot") version "4.0.2"
+}
+
+version = "0.1"
+group = "org.tcibinan.micronaut"
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
+    implementation("io.micronaut.serde:micronaut-serde-jackson")
+    implementation("io.micronaut:micronaut-jackson-databind")
+
+    implementation("io.micronaut.discovery:micronaut-discovery-client")
+}
+
+java {
+    sourceCompatibility = JavaVersion.toVersion("17")
+    targetCompatibility = JavaVersion.toVersion("17")
+}
