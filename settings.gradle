@@ -5,3 +5,5 @@ include 'resource-service-web'
 
 include 'song-service'
 include 'song-service-web'
+
+include 'eureka-server'
