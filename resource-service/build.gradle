@@ -14,26 +14,33 @@ repositories {
 dependencies {
     implementation(project(":resource-service-web"))
     implementation(project(":song-service-web"))
+    implementation(project(":micronaut-discovery-client-workaround"))
 
-    annotationProcessor("io.micronaut.openapi:micronaut-openapi")
     annotationProcessor("io.micronaut.serde:micronaut-serde-processor")
-    annotationProcessor("io.micronaut.data:micronaut-data-processor")
+    implementation("io.micronaut.serde:micronaut-serde-jackson")
+
+    implementation("io.micronaut.discovery:micronaut-discovery-client")
 
     implementation("io.micronaut:micronaut-http-client")
-    implementation("io.micronaut.serde:micronaut-serde-jackson")
+    implementation("io.micronaut:micronaut-retry")
+
+    implementation("io.micronaut.reactor:micronaut-reactor")
+    implementation("io.micronaut.reactor:micronaut-reactor-http-client")
+
+    annotationProcessor("io.micronaut.data:micronaut-data-processor")
     implementation("io.micronaut.data:micronaut-data-hibernate-jpa")
     implementation("io.micronaut.sql:micronaut-jdbc-hikari")
+    runtimeOnly("org.postgresql:postgresql:42.6.0")
+    testRuntimeOnly("com.h2database:h2")
 
+    annotationProcessor("io.micronaut.openapi:micronaut-openapi")
     implementation("io.swagger.core.v3:swagger-annotations")
+
+    runtimeOnly("ch.qos.logback:logback-classic")
 
     implementation(platform("org.apache.tika:tika-bom:2.8.0"))
     implementation("org.apache.tika:tika-core")
     implementation("org.apache.tika:tika-parsers-standard-package")
-
-    runtimeOnly("ch.qos.logback:logback-classic")
-    runtimeOnly("org.postgresql:postgresql:42.6.0")
-
-    testRuntimeOnly("com.h2database:h2")
 }
 
 application {

@@ -11,3 +11,4 @@ apply plugin: 'docker-compose'
 
 composeBuild.dependsOn("resource-service:assemble")
 composeBuild.dependsOn("song-service:assemble")
+composeBuild.dependsOn("eureka-server:assemble")

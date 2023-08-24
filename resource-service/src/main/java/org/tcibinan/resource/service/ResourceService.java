@@ -1,18 +1,17 @@
 package org.tcibinan.resource.service;
 
-import io.micronaut.http.client.HttpClient;
-import io.micronaut.http.client.annotation.Client;
 import jakarta.inject.Singleton;
 import jakarta.transaction.Transactional;
 import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.mp3.Mp3Parser;
+import org.tcibinan.resource.client.SongService;
+import org.tcibinan.resource.controller.request.CreateResourceRequest;
+import org.tcibinan.resource.controller.request.DeleteResourceRequest;
 import org.tcibinan.resource.entity.Resource;
 import org.tcibinan.resource.exception.ValidationException;
 import org.tcibinan.resource.repository.ResourceRepository;
-import org.tcibinan.resource.controller.request.CreateResourceRequest;
-import org.tcibinan.resource.controller.request.DeleteResourceRequest;
 import org.tcibinan.song.web.request.CreateSongRequest;
 import org.tcibinan.song.web.response.CreateSongResponse;
 import org.xml.sax.SAXException;
@@ -24,15 +23,13 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Optional;
 
-import static io.micronaut.http.HttpRequest.POST;
-
 @Singleton
 public class ResourceService {
 
-    private final HttpClient songs;
+    private final SongService songs;
     private final ResourceRepository repository;
 
-    public ResourceService(@Client("song") HttpClient songs,
+    public ResourceService(SongService songs,
                            ResourceRepository repository) {
         this.songs = songs;
         this.repository = repository;
@@ -42,7 +39,7 @@ public class ResourceService {
     public Resource create(CreateResourceRequest request) {
         Metadata metadata = parse(request.data());
         Resource resource = save(request.data());
-        CreateSongResponse song = save(metadata, resource);
+        save(metadata, resource);
         return resource;
     }
 
@@ -63,7 +60,6 @@ public class ResourceService {
         } catch (IOException | SAXException | TikaException e) {
             throw new ValidationException(e);
         }
-        System.out.println(String.join(",", metadata.names()));
         return metadata;
     }
 
@@ -75,7 +71,7 @@ public class ResourceService {
                 metadata.get("xmpDM:duration"),
                 metadata.get("xmpDM:releaseDate"),
                 resource.getId());
-        return songs.toBlocking().retrieve(POST("/songs", request), CreateSongResponse.class);
+        return songs.create(request).block();
     }
 
     public Optional<Resource> get(Long id) {

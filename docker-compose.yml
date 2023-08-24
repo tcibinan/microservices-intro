@@ -4,13 +4,21 @@ services:
         build:
             context: resource-service
         ports:
-            - 8080:8080
+            - ${RESOURCE_SERVICE_PORT}:${RESOURCE_SERVICE_PORT}
         depends_on:
             - resource-service-postgres
+            - eureka-server
+        environment:
+            EUREKA_HOST: ${EUREKA_HOST}
+            EUREKA_PORT: ${EUREKA_PORT}
+            RESOURCE_SERVICE_PORT: ${RESOURCE_SERVICE_PORT}
+            RESOURCE_SERVICE_POSTGRES_URL: ${RESOURCE_SERVICE_POSTGRES_URL}
+            RESOURCE_SERVICE_POSTGRES_USER: ${RESOURCE_SERVICE_POSTGRES_USER}
+            RESOURCE_SERVICE_POSTGRES_PASSWORD: ${RESOURCE_SERVICE_POSTGRES_PASSWORD}
     resource-service-postgres:
         image: postgres:15.3
         ports:
-            - 5432:5432
+            - 5433:5432
         environment:
             POSTGRES_DB: service
             POSTGRES_USER: service
@@ -19,14 +27,29 @@ services:
         build:
             context: song-service
         ports:
-            - 8081:8080
+            - ${SONG_SERVICE_PORT}:${SONG_SERVICE_PORT}
         depends_on:
             - song-service-postgres
+            - eureka-server
+        environment:
+            EUREKA_HOST: ${EUREKA_HOST}
+            EUREKA_PORT: ${EUREKA_PORT}
+            SONG_SERVICE_PORT: ${SONG_SERVICE_PORT}
+            SONG_SERVICE_POSTGRES_URL: ${SONG_SERVICE_POSTGRES_URL}
+            SONG_SERVICE_POSTGRES_USER: ${SONG_SERVICE_POSTGRES_USER}
+            SONG_SERVICE_POSTGRES_PASSWORD: ${SONG_SERVICE_POSTGRES_PASSWORD}
     song-service-postgres:
         image: postgres:15.3
         ports:
-            - 5433:5432
+            - 5434:5432
         environment:
             POSTGRES_DB: service
             POSTGRES_USER: service
             POSTGRES_PASSWORD: service
+    eureka-server:
+        build:
+            context: eureka-server
+        ports:
+            - ${EUREKA_PORT}:${EUREKA_PORT}
+        environment:
+            EUREKA_PORT: ${EUREKA_PORT}
