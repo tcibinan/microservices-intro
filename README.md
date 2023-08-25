@@ -3,11 +3,11 @@
 ```bash
 ./gradlew composeUp
 
-# Open in browser resource service swagger ui
+# Resource Service Swagger UI
 http://localhost:8081/swagger-ui
 
-# Open in browser song service swagger ui
-http://localhost:8082/swagger-ui
+# Eureka Server UI
+http://localhost:8761
 
 ./gradlew composeDown
 ```

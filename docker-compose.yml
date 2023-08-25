@@ -26,8 +26,9 @@ services:
     song-service:
         build:
             context: song-service
-        ports:
-            - ${SONG_SERVICE_PORT}:${SONG_SERVICE_PORT}
+        deploy:
+            mode: replicated
+            replicas: 2
         depends_on:
             - song-service-postgres
             - eureka-server
