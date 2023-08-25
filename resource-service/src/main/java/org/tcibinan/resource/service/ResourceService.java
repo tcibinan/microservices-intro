@@ -6,6 +6,8 @@ import org.apache.tika.exception.TikaException;
 import org.apache.tika.metadata.Metadata;
 import org.apache.tika.parser.ParseContext;
 import org.apache.tika.parser.mp3.Mp3Parser;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.tcibinan.resource.client.SongService;
 import org.tcibinan.resource.controller.request.CreateResourceRequest;
 import org.tcibinan.resource.controller.request.DeleteResourceRequest;
@@ -26,6 +28,8 @@ import java.util.Optional;
 @Singleton
 public class ResourceService {
 
+    protected static final Logger LOG = LoggerFactory.getLogger(ResourceService.class);
+
     private final SongService songs;
     private final ResourceRepository repository;
 
@@ -37,6 +41,7 @@ public class ResourceService {
 
     @Transactional
     public Resource create(CreateResourceRequest request) {
+        LOG.info("Creating resource...");
         Metadata metadata = parse(request.data());
         Resource resource = save(request.data());
         save(metadata, resource);
@@ -75,11 +80,13 @@ public class ResourceService {
     }
 
     public Optional<Resource> get(Long id) {
+        LOG.info("Getting resource...");
         return repository.findById(id);
     }
 
     @Transactional
     public List<Long> delete(DeleteResourceRequest request) {
+        LOG.info("Deleting resources...");
         return request.ids().stream()
                 .filter(id -> {
                     Optional<Resource> resource = repository.findById(id);
